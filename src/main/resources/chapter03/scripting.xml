@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:lang="http://www.springframework.org/schema/lang"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/lang
+        http://www.springframework.org/schema/lang/spring-lang-4.0.xsd">
+
+    <bean id="coconut"
+          class="com.internship.sia.chapter03.scripting.Coconut">
+        <property name="lime" ref="lime"/>
+    </bean>
+
+    <lang:jruby id="lime"
+                script-source="classpath:com/internship/sia/chapter03/scripting/Lime.rb"
+                script-interfaces="com.internship.sia.chapter03.scripting.Lime"/>
+    <!--<lang:groovy id="lime2"-->
+                 <!--script-source="classpath*:com/internship/sia/chapter03/scripting/Lime.groovy"/>-->
+    <!--<lang:bsh id="lime3"-->
+              <!--script-source="classpath:com/internship/sia/chapter03/scripting/Lime.bsh"-->
+              <!--script-interfaces="com.internship.sia.chapter03.scripting.Lime"/>-->
+</beans>

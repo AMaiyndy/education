@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <context:annotation-config />
+
+    <!--Объявление компонента Сцена-->
+    <bean id="theStage" class="com.internship.sia.springidol.Stage"
+          factory-method="getInstance"/>
+
+    <!--Объявление компонента Аудитория-->
+    <bean id="auditorium"
+          class="com.internship.sia.springidol.Auditorium"
+          init-method="turnOnLights"
+          destroy-method="turnOffLights"/>
+
+    <!--Объявление компонента Поэт-Жонглер-->
+    <bean id="poeticDuke"
+          class="com.internship.sia.springidol.performers.juggler.PoeticJuggler"
+          autowire="constructor"/>
+
+    <!--Объявление компонента Sonnet-->
+    <bean id="sonnet29"
+          class="com.internship.sia.springidol.performers.juggler.poem.Sonnet29"/>
+
+    <bean id="gary"
+          class="com.internship.sia.springidol.performers.instrumentalist.Instrumentalist">
+        <property name="song" value="Jingle Bells"/>
+    </bean>
+
+    <!--Объявление абстрактного компонента baseSaxophonist-->
+    <bean id="baseSaxophonist"
+          class="com.internship.sia.springidol.performers.instrumentalist.Instrumentalist"
+          abstract="true">
+        <property name="instrument" ref="saxophone"/>
+        <property name="song" value="Jingle Bells"/>
+    </bean>
+    <!--Объявление компонентов-наследников baseSaxophonist-->
+    <bean id="kenny" parent="baseSaxophonist"/>
+    <bean id="david" parent="baseSaxophonist"/>
+    <bean id="frank" parent="baseSaxophonist">
+        <property name="song" value="Mary had a little lamb"/>
+    </bean>
+
+    <!--Объявление компонента hank OneManBand-->
+    <bean id="hank"
+          class="com.internship.sia.springidol.performers.instrumentalist.onemanband.OneManBand">
+        <property name="instruments">
+            <map>
+                <entry key="SAXOPHONE" value-ref="saxophone"/>
+                <entry key="PIANO" value-ref="piano"/>
+                <entry key="GUITAR" value-ref="guitar"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--Объявление абстрактного компонента basePerformer-->
+    <bean id="basePerformer" abstract="true">
+        <property name="song" value="Somewhere Over the Rainbow"/>
+    </bean>
+    <!--Объявление компонентов-наследников basePerformer-->
+    <bean id="taylor"
+          class="com.internship.sia.springidol.performers.Vocalist"
+          parent="basePerformer"/>
+    <bean id="stevie"
+          class="com.internship.sia.springidol.performers.instrumentalist.AbstractInstrumentalist"
+          parent="basePerformer">
+        <lookup-method name="getInstrument" bean="guitar"/>
+    </bean>
+
+    <!--Автосвязывание byName-->
+    <bean id="kenny2"
+          class="com.internship.sia.springidol.performers.instrumentalist.Instrumentalist"
+          autowire="byName">
+        <property name="song" value="JingleBells"/>
+    </bean>
+
+    <!--Объявление компонентов instruments-->
+    <bean id="saxophone"
+          class="com.internship.sia.springidol.instruments.Saxophone"/>
+    <bean id="piano"
+          class="com.internship.sia.springidol.instruments.Piano"/>
+    <bean id="guitar"
+          class="com.internship.sia.springidol.instruments.Guitar"
+          scope="prototype"/>
+    <bean id="instrument"
+          class="com.internship.sia.springidol.instruments.Piano"/>
+
+    <!--Объявление компонента harry Magician-->
+    <bean id="harry"
+          class="com.internship.sia.springidol.performers.magician.Magician">
+        <property name="magicBox" ref="magicBox" />
+        <property name="magicWords" value="Bippity boppity boo"/>
+    </bean>
+    <!--Объявление компонента magicBox MagicBoxImpl-->
+    <bean id="magicBox"
+          class="com.internship.sia.springidol.performers.magician.MagicBoxImpl">
+        <replaced-method
+            name="getContents"
+            replacer="tigerReplacer"/>
+    </bean>
+    <!--Объявление компонента tigerReplacer-->
+    <bean id="tigerReplacer"
+          class="com.internship.sia.springidol.performers.magician.TigerReplacer"/>
+
+    <!--Объявление компонента pianist,
+    экземпляр которого создается за пределами Spring-->
+        <!--<bean id="pianist"-->
+              <!--class="com.internship.sia.springidol.performers.instrumentalist.Instrumentalist"-->
+              <!--abstract="true">-->
+            <!--<property name="song" value="Chopsticks"/>-->
+            <!--<property name="instrument">-->
+                <!--<bean class="com.internship.sia.springidol.instruments.Piano"/>-->
+            <!--</property>-->
+        <!--</bean>-->
+
+        <!--<aop:spring-configured/>-->
+
+
+
+</beans>
